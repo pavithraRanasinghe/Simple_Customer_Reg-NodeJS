@@ -23,6 +23,15 @@ app.post('/customer', (req, res) => {
     });
 });
 
+app.get('/customer', (req, res) => {
+    Customer.find().then((result) => {
+        res.send({result});
+    }, (err) => {
+        res.status(404).send(err);
+    });
+});
+
+app.
 
 app.listen(8080, () => {
     console.log("Server up on port 8080");
