@@ -49,6 +49,27 @@ app.delete('/customer/:id',(req,res)=>{
    });
 });
 
+app.patch('/customer/:id',(req,res)=>{
+   const id = req.params.id;
+   const body = _.pick(req.body,['username','email','mobile','address']);
+
+   if (!ObjectID.isValid(id)){
+       console.log("ID find result");
+       return res.status(404).send();
+   }
+
+   Customer.findByIdAndUpdate(id,{$set:body},{new:true}).then((result)=>{
+       if (!result){
+           console.log("Can't find result");
+           return res.status(404).send();
+       }
+
+       res.send(result);
+   },(err)=>{
+       res.status(404).send(err);
+   });
+});
+
 app.listen(8080, () => {
     console.log("Server up on port 8080");
 });
