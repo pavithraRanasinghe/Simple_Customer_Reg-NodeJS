@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 const CustomerSchema = new mongoose.Schema({
-    username:{
+    name:{
         type:String,
         required:true
     },
@@ -19,7 +19,6 @@ const CustomerSchema = new mongoose.Schema({
         type:String,
         required:true,
         unique: true,
-        minlength:9
     },
     address:{
         type:String,

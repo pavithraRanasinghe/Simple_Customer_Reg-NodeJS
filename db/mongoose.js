@@ -9,5 +9,5 @@ mongoose.connect("mongodb://localhost:27017/taskdb",{
     useCreateIndex: true
 });
 
-module.export = mongoose;
+module.exports = mongoose;
 
