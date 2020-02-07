@@ -26,19 +26,6 @@ const AdminSchema = new mongoose.Schema({
 });
 
 
-
-//
-// AdminSchema.methods.generateAuthToken = function (username) {
-//     const accessToken = jwt.sign({
-//         username: username,
-//     }, '123abc', {
-//         expiresIn: '1d'
-//     });
-//     console.log("Token: " + accessToken);
-//     return accessToken;
-// };
-
-
 AdminSchema.statics.findByToken = function (token) {
     return new Promise(async (resolve, reject) => {
         try {
