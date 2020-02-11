@@ -98,11 +98,13 @@ app.delete('/customer/:id', authenticate, (req, res) => {
         if (!customer) {
             return res.status(404).send();
         }
-        fs.unlink(`server/upload/${customer.profile_pic}`, (err) => {
+
+        res.send(customer);
+        fs.unlink(`server/upload/${customer.name}_profile_pic.jpg`, (err) => {
             if (err) throw err;
             console.log('Image was deleted');
         });
-        res.send(customer);
+
     }, (err) => {
         res.status(404).send(err);
     });
@@ -112,28 +114,27 @@ app.delete('/customer/:id', authenticate, (req, res) => {
 app.patch('/customer/:id', authenticate, async (req, res) => {
 
     const id = req.params.id;
+    let customerName;
     console.log("id : ", id);
+
+    Customer.findById(id,(err,customer)=>{
+        console.log("Customer Name : "+customer.name);
+            customerName = customer.name;
+    });
 
     if (!ObjectID.isValid(id)) {
         console.log("ID not find");
         return res.status(404).send();
     }
 
-    Customer.findById(id).then((result)=>{
-        fs.unlink(`server/upload/${result.profile_pic}`, (err) => {
-            if (err) throw err;
-            console.log('Image was deleted');
-        });
-    }).catch((err)=>{
-        console.log("Error : ",err);
-
-    });
-
 
     const form = formidable.IncomingForm({uploadDir: __dirname + '/upload', keepExtensions: true});
     form.parse(req, function (err, fields, files) {
 
-        fs.rename(files.image.path, __dirname + `/upload/${fields.username} profile_pic.jpg`, function (err, data) {
+        console.log("USERNAME : "+fields.username);
+        console.log("Image Path : "+files.image.path);
+
+        fs.rename(files.image.path, __dirname + `/upload/${fields.username.toLowerCase()}_profile_pic.jpg`, function (err, data) {
             if (err) throw err;
             console.log("Image rename successfull");
         });
@@ -143,7 +144,7 @@ app.patch('/customer/:id', authenticate, async (req, res) => {
             email: fields.email,
             mobile: fields.mobile,
             address: fields.address,
-            profile_pic: `${fields.username} profile_pic.jpg`
+            profile_pic: `http://localhost:8080/${fields.username.toLowerCase()}_profile_pic.jpg`
         });
         console.log("Customer Object : ", newCustomer);
 
@@ -154,11 +155,22 @@ app.patch('/customer/:id', authenticate, async (req, res) => {
             }
 
             res.send(result);
+            fs.unlink(`server/upload/${customerName.toLowerCase()}_profile_pic.jpg`, (err) => {
+                if (err) throw err;
+                console.log('Image was deleted');
+            });
         }, (err) => {
             res.status(404).send(err);
         });
     });
 });
+
+// =================================================================================
+
+// fs.unlink(`server/upload/${customer.profile_pic}`, (err) => {
+//     if (err) throw err;
+//     console.log('Image was deleted');
+// });
 
 // ==================================ADMIN================================================
 
