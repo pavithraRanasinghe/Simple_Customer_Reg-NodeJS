@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const _ = require('lodash');
 
 const AdminSchema = new mongoose.Schema({
     username: {
@@ -24,7 +23,6 @@ const AdminSchema = new mongoose.Schema({
         }
     }]
 });
-
 
 AdminSchema.statics.findByToken = function (token) {
     return new Promise(async (resolve, reject) => {
@@ -56,10 +54,11 @@ AdminSchema.statics.findByUsername = function (username, password) {
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, user.password, (err, res) => {
                 if (res) {
+                    console.log("Admin available");
                     return resolve(user);
                 } else {
-                    console.log("Password is wrong");
-                    reject();
+                    console.log("Password is wrong")
+                    return reject("Password is wrong");
                 }
             });
         });
@@ -78,6 +77,7 @@ AdminSchema.pre('save', function (next) {
         });
     }
 });
+
 
 const Admin = mongoose.model('admin', AdminSchema);
 

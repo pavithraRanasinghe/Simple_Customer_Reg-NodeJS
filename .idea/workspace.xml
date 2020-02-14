@@ -59,7 +59,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jsx.switch.disabled" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/js" />
+    <property name="last_opened_file_path" value="E:/CMJD 52/2nd/#WEB/JS/Complete JS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -72,21 +72,24 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.postfix.templates" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Training Session\Node\Project\Task\server\view" />
+      <recent name="E:\Training Session\Node\Project\Task\server" />
+      <recent name="E:\Training Session\Node\Project\Task\public" />
+      <recent name="E:\Training Session\Node\Project\Task\server\public" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\Training Session\Node\Project\Task\js" />
       <recent name="E:\Training Session\Node\Project\Task\server" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\Training Session\Node\Project\Task\server\public" />
-    </key>
   </component>
   <component name="RunManager">
-    <configuration name="admin.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/models/admin.js" working-dir="$PROJECT_DIR$/models">
+    <configuration name="Admin.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/server/models/Admin.js" working-dir="$PROJECT_DIR$/server/models">
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Node.js.admin.js" />
+        <item itemvalue="Node.js.Admin.js" />
       </list>
     </recent_temporary>
   </component>
@@ -108,7 +111,13 @@
       <workItem from="1581174305263" duration="3080000" />
       <workItem from="1581222451694" duration="616000" />
       <workItem from="1581301929489" duration="4879000" />
-      <workItem from="1581393661600" duration="6024000" />
+      <workItem from="1581393661600" duration="19566000" />
+      <workItem from="1581434537662" duration="6147000" />
+      <workItem from="1581478929493" duration="16520000" />
+      <workItem from="1581505408726" duration="847000" />
+      <workItem from="1581519091854" duration="2594000" />
+      <workItem from="1581565110958" duration="33102000" />
+      <workItem from="1581651824448" duration="22326000" />
     </task>
     <servers />
   </component>
@@ -120,10 +129,11 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="361" y="92" key="#Project_Structure/0.0.1536.864/1920.0.1920.1200@0.0.1536.864" timestamp="1580877171358" />
-    <state x="549" y="188" key="FileChooserDialogImpl" timestamp="1580884654722">
+    <state x="549" y="188" key="FileChooserDialogImpl" timestamp="1581654180398">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="549" y="188" key="FileChooserDialogImpl/0.0.1536.864/1920.0.1920.1200@0.0.1536.864" timestamp="1580884654722" />
+    <state x="549" y="188" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1581654180398" />
     <state width="1493" height="277" key="GridCell.Tab.0.bottom" timestamp="1581072390569">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -196,20 +206,32 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="277" y="76" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1580794160550" />
-    <state x="465" y="258" key="com.intellij.ide.util.TipDialog" timestamp="1581393736242">
+    <state x="465" y="258" key="com.intellij.ide.util.TipDialog" timestamp="1581651837649">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="465" y="258" key="com.intellij.ide.util.TipDialog/0.0.1536.864/1920.0.1920.1200@0.0.1536.864" timestamp="1581072521554" />
-    <state x="465" y="258" key="com.intellij.ide.util.TipDialog/0.0.1536.864@0.0.1536.864" timestamp="1581393736242" />
-    <state x="425" y="197" key="run.anything.popup" timestamp="1581006393134">
+    <state x="465" y="258" key="com.intellij.ide.util.TipDialog/0.0.1536.864@0.0.1536.864" timestamp="1581651837649" />
+    <state x="406" y="48" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1581569490975">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="406" y="48" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.864@0.0.1536.864" timestamp="1581569490975" />
+    <state x="578" y="350" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1581422664514">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="578" y="350" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.864@0.0.1536.864" timestamp="1581422664514" />
+    <state x="209" y="158" key="new project wizard" timestamp="1581673219721">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="209" y="158" key="new project wizard/0.0.1536.864@0.0.1536.864" timestamp="1581673219721" />
+    <state x="425" y="197" width="672" height="677" key="run.anything.popup" timestamp="1581664656481">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="425" y="197" key="run.anything.popup/0.0.1536.864/1920.0.1920.1200@0.0.1536.864" timestamp="1580984221836" />
-    <state x="425" y="197" key="run.anything.popup/0.0.1536.864@0.0.1536.864" timestamp="1581006393134" />
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1581064250692">
+    <state x="425" y="197" width="672" height="677" key="run.anything.popup/0.0.1536.864@0.0.1536.864" timestamp="1581664656481" />
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1581595781897">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864/1920.0.1920.1200@0.0.1536.864" timestamp="1581064250692" />
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1580762324009" />
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1581595781897" />
   </component>
 </project>

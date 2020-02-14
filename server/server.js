@@ -1,176 +1,37 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const _ = require('lodash');
-const {ObjectID} = require('mongodb');
-const jwt = require('jsonwebtoken');
-const multer = require('multer');
-const formidable = require('formidable');
 const path = require('path');
-const fs = require('fs');
 
-const mongoose = require('./../db/mongoose');
-const Customer = require('./../models/customer');
-const Admin = require('./../models/admin');
-const {authenticate} = require('./../middleware/authenticate');
-
+const mongoose = require('./db/mongoose');
+const {authenticate} = require('./middleware/authenticate');
+const admin = require('./routes/admin');
+const customer = require('./routes/customer');
+const index = require('./routes/index');
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.set('views', path.join(__dirname, '../public/views'));
+app.use(express.static(path.join(__dirname, '../public/upload')));
+app.set('view engine', 'hbs');
 
 
-// =============ImageStorage========================
-// const storage = multer.diskStorage({
-//     destination: function(req, file, cb) {
-//         cb(null, 'uploads/');
-//     },
-//
-//     filename: function(req, file, cb) {
-//         cb(null, file.fieldname + path.extname(file.originalname));
-//     }
-// });
-// // var upload = multer({ storage: storage })
+/**
+ * Login page load
+ */
 
-app.use(express.static(__dirname + '/upload'));
+app.use('/',index);
 
-//=====================================ADD CUSTOMER=======================================
+/**
+ * Admin
+ */
 
-app.post('/customer', authenticate, (req, res) => {
-    const form = formidable.IncomingForm({uploadDir: __dirname + '/upload', keepExtensions: true});
-    form.parse(req, function (err, fields, files) {
-        console.log("files", files.image);
-        console.log("Text", fields);
+app.use('/',admin);
 
-        fs.rename(files.image.path, __dirname + `/upload/${fields.username.toLowerCase()}_profile_pic.jpg`, function (err, data) {
-            if (err) throw err;
-            console.log("Image Name : ", data);
-        });
+/**
+ * Customer
+ */
 
-        const newCustomer = new Customer({
-            name: fields.username,
-            email: fields.email,
-            mobile: fields.mobile,
-            address: fields.address,
-            profile_pic: `http://localhost:8080/${fields.username.toLowerCase()}_profile_pic.jpg`
-        });
-        console.log("Customer Object : ", newCustomer);
-
-        newCustomer.save().then((result) => {
-            res.send(result);
-        }, (err) => {
-            res.status(500).send(err);
-        });
-
-    });
-});
-
-//=====================================GET CUSTOMERS=======================================
-
-app.get('/customer', authenticate,async (req, res) => {
-    Customer.find().then((result) => {
-        for (let customer of result) {
-            let url = customer.profile_pic;
-
-            app.get(url,(req,res)=>{
-
-                res.send(` <hr><img src="${req.url}" width="500">`);
-            });
-        }
-        res.send(result);
-        }, (err) => {
-        res.status(500).send(err);
-    });
-});
-
-
-
-//==================================DELETE CUSTOMER=======================================
-
-app.delete('/customer/:id', authenticate, (req, res) => {
-    const id = req.params.id;
-    console.log("Customer ID : " + id);
-
-    if (!ObjectID.isValid(id)) {
-        return res.status(500).send("error");
-    }
-
-    Customer.findByIdAndRemove(id).then((customer) => {
-        if (!customer) {
-            return res.status(404).send();
-        }
-
-        res.send(customer);
-        fs.unlink(`server/upload/${customer.name}_profile_pic.jpg`, (err) => {
-            if (err) throw err;
-            console.log('Image was deleted');
-        });
-
-    }, (err) => {
-        res.status(404).send(err);
-    });
-});
-//=====================================UPDATE CUSTOMER=======================================
-
-app.patch('/customer/:id', authenticate, async (req, res) => {
-
-    const id = req.params.id;
-    let customerName;
-    console.log("id : ", id);
-
-    Customer.findById(id,(err,customer)=>{
-        console.log("Customer Name : "+customer.name);
-            customerName = customer.name;
-    });
-
-    if (!ObjectID.isValid(id)) {
-        console.log("ID not find");
-        return res.status(404).send();
-    }
-
-
-    const form = formidable.IncomingForm({uploadDir: __dirname + '/upload', keepExtensions: true});
-    form.parse(req, function (err, fields, files) {
-
-        console.log("USERNAME : "+fields.username);
-        console.log("Image Path : "+files.image.path);
-
-        fs.rename(files.image.path, __dirname + `/upload/${fields.username.toLowerCase()}_profile_pic.jpg`, function (err, data) {
-            if (err) throw err;
-            console.log("Image rename successfull");
-        });
-
-        const newCustomer = Object.assign({
-            name: fields.username,
-            email: fields.email,
-            mobile: fields.mobile,
-            address: fields.address,
-            profile_pic: `http://localhost:8080/${fields.username.toLowerCase()}_profile_pic.jpg`
-        });
-        console.log("Customer Object : ", newCustomer);
-
-        Customer.findByIdAndUpdate(id, {$set: newCustomer}, {new: true}).then((result) => {
-            if (!result) {
-                console.log("Can't find result");
-                return res.status(404).send();
-            }
-
-            res.send(result);
-            fs.unlink(`server/upload/${customerName.toLowerCase()}_profile_pic.jpg`, (err) => {
-                if (err) throw err;
-                console.log('Image was deleted');
-            });
-        }, (err) => {
-            res.status(404).send(err);
-        });
-    });
-});
-
-// =================================================================================
-
-// fs.unlink(`server/upload/${customer.profile_pic}`, (err) => {
-//     if (err) throw err;
-//     console.log('Image was deleted');
-// });
+app.use('/',customer);
 
 // ==================================ADMIN================================================
 
@@ -190,26 +51,7 @@ app.patch('/customer/:id', authenticate, async (req, res) => {
 //    });
 // });
 
-
 //================================LOGIN ADMIN=======================================
-
-app.post('/login', (req, res) => {
-    const {username, password} = req.body;
-
-    Admin.findByUsername(username, password).then((admin) => {
-        console.log("Server Admin : " + admin);
-        const accessToken = jwt.sign({
-            username: username,
-        }, '123abc', {
-            expiresIn: '1d'
-        });
-        console.log("Token: " + accessToken);
-
-        res.header('x-auth', accessToken).send(accessToken);
-    }).catch((err) => {
-        res.status(401).send(err);
-    });
-});
 
 app.listen(8080, () => {
     console.log("Server up on port 8080");

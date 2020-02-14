@@ -1,7 +1,9 @@
-const Admin = require('./../models/admin');
+const Admin = require('../models/Admin');
+const localStorage = require('localStorage');
 
 const authenticate = (req,res,next)=>{
-    const token = req.header('x-auth');
+    const token = localStorage.getItem("token");
+    console.log("Token in Authenticate : "+token);
     Admin.findByToken(token).then((admin)=>{
         if(!admin){
             console.log("Rejected Find Admin");

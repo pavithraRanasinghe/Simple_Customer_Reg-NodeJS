@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Form</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+    <style>
+        .input-group > .form-control {
+            flex: none;
+        }
+
+        .form-control {
+            width: 35vw;
+        }
+        form{
+            margin: 10px;
+            height: 60vh;
+        }
+        .btn-group{
+            width: 35vw;
+        }
+
+        #imageSec {
+            position: relative;
+            width: 56vw;
+            height: 52vh;
+            bottom: 53vh;
+            left: 39vw;
+            border: 1px solid black;
+        }
+
+        #selectImage {
+            position: absolute;
+            top: 64px;
+            left: 12px;
+            width: 22vw;
+        }
+
+        #viewImage {
+            position: relative;
+            border: 1px solid;
+            width: 25vw;
+            height: 43vh;
+            top: 30px;
+            left: 29vw;
+        }
+    </style>
+</head>
+<body>
+<section class="col" id="form">
+    <form id="formCustomer" style="margin: 10px">
+        <div id="h2">
+            <h2>Customer Form</h2>
+        </div>
+        <div>
+            <label>Customer Name</label>
+            <div class="input-group mb-3">
+
+                <input aria-describedby="basic-addon3" class="form-control" id="txtName" name="name"
+                       type="text">
+            </div>
+            <label>Customer Email</label>
+            <div class="input-group mb-3">
+
+                <input aria-describedby="basic-addon3" class="form-control" id="txtEmail" name="email"
+                       type="text">
+            </div>
+            <label>Customer Mobile</label>
+            <div class="input-group mb-3">
+
+                <input aria-describedby="basic-addon3" class="form-control" id="txtMobile" name="mobile"
+                       type="text">
+            </div>
+            <label>Customer Address</label>
+            <div class="input-group mb-3">
+
+                <input aria-describedby="basic-addon3" class="form-control" id="txtAddress" name="address"
+                       type="text">
+            </div>
+        </div>
+        <div aria-label="Basic example" class="btn-group" role="group">
+            <button class="btn btn-secondary bg-primary" id="btnAdd" name="btn" type="button" value="addBtn">Add
+                Customer
+            </button>
+            <button class="btn btn-secondary bg-warning" id="btnUpdate" name="btn" type="button" value="updateBtn">
+                Update
+                Customer
+            </button>
+            <button class="btn btn-secondary bg-danger" id="btnDelete" name="btn" type="button" value="deleteBtn">Delete
+                Customer
+            </button>
+            <button class="btn btn-secondary bg-secondary" id="btnGetAll" name="btn" type="button">GetAll</button>
+        </div>
+
+        <div id="imageSec">
+            <input id="selectImage" type="file" class="btn btn-secondary bg-secondary" name="image">
+            <img src="#" alt="" id="viewImage">
+        </div>
+    </form>
+</section>
+<section class="col" style="background: aliceblue; height: 600px; overflow: auto">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Mobile</th>
+            <th scope="col">Address</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    let customerId;
+
+    /**
+     *Display Profile pic
+     */
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#viewImage').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#selectImage").change(function () {
+        readURL(this);
+    });
+
+    /**
+     * Add Customer
+     */
+    $('#btnAdd').click(function () {
+        const name= $('#txtName').val();
+        const email = $('#txtEmail').val();
+        const mobile = $('#txtMobile').val();
+        const address = $('#txtAddress').val();
+
+        const fd = new FormData();
+        const files = $('#selectImage')[0].files[0];
+        fd.append('image',files);
+        fd.append('name',name);
+        fd.append('email',email);
+        fd.append('mobile',mobile);
+        fd.append('address',address);
+
+        $.ajax({
+            url: '/customer',
+            method: 'post',
+            data:fd,
+            contentType: false,
+            processData: false
+        }).done(function (res) {
+            console.log(res);
+            clearText();
+            getAll();
+        }).fail(function (err) {
+            console.log("RUN ERROR");
+            console.log(err);
+        });
+    });
+
+    /**
+     * Get all Customers
+     */
+    const getAll = function(){
+        $('tbody').empty();
+        $.ajax({
+            url: 'customer',
+            method: 'get',
+        }).done(function (result) {
+            for (const customer of result){
+                const row = "<tr><td>"+customer._id+"</td><td>"+customer.name+"</td><td>"+customer.email+"</td><td>"+customer.mobile+"</td><td>"+customer.address+"</td></tr>"
+                $('tbody').append(row);
+            }
+            clearText();
+        }).fail(function (err) {
+            console.log(err);
+        });
+    }
+
+    $('#btnGetAll').click(function () {
+        getAll();
+    });
+
+    /**
+     * Update Customer
+     */
+    $('#btnUpdate').click(function () {
+        const name= $('#txtName').val();
+        const email = $('#txtEmail').val();
+        const mobile = $('#txtMobile').val();
+        const address = $('#txtAddress').val();
+
+        const fd = new FormData();
+        const files = $('#selectImage')[0].files[0];
+        fd.append('image',files);
+        fd.append('name',name);
+        fd.append('email',email);
+        fd.append('mobile',mobile);
+        fd.append('address',address);
+        fd.append('id',customerId);
+
+        $.ajax({
+            url: '/customer',
+            method: 'put',
+            data:fd,
+            contentType: false,
+            processData: false
+        }).done(function (res) {
+            console.log(res);
+            clearText();
+            getAll();
+        }).fail(function (err) {
+            console.log("RUN ERROR");
+            console.log(err);
+        });
+    });
+
+    /**
+     * Delete Customer
+     */
+
+    $('#btnDelete').click(function () {
+        $.ajax({
+            url: '/customer',
+            method: 'delete',
+            data: {
+                "id":customerId
+            }
+        }).done(function (result) {
+            console.log(result);
+            clearText();
+            getAll();
+        }).fail(function (err) {
+            console.log(err);
+        });
+    });
+
+
+    /**
+     * View Customer
+     */
+
+    $('tbody').click(function () {
+        $("tbody tr").off('click');
+        $("tbody tr").on('click', function () {
+            const id = $($(this).children().get(0)).text();
+            const name = $($(this).children().get(1)).text();
+            const email = $($(this).children().get(2)).text();
+            const mobile = $($(this).children().get(3)).text();
+            const address = $($(this).children().get(4)).text();
+
+            customerId = id;
+            $("#txtName").val(name);
+            $("#txtEmail").val(email);
+            $("#txtMobile").val(mobile);
+            $("#txtAddress").val(address);
+            $('#viewImage').attr('src', `/${name.toLowerCase()}_profile_pic.jpg`);
+        });
+    });
+    const clearText = function(){
+        $("#txtName").val("");
+        $("#txtEmail").val("");
+        $("#txtMobile").val("");
+        $("#txtAddress").val("");
+        $("#selectImage").val("");
+        $("#viewImage").attr('src', '/');
+    };
+
+</script>
+</body>
+</html>
